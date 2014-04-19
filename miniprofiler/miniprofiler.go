@@ -267,6 +267,30 @@ func (p *Profile) Includes() template.HTML {
 	}
 	return template.HTML(w.String())
 }
+type ProfileData struct {
+	Name string
+	Duration float64
+	Version string
+	Current string
+	Hostname string
+}
+func (p *Profile) Data() *ProfileData {
+	if !Enable(p.r) {
+		return nil
+	}
+
+
+	v := ProfileData{
+		Name:     p.Name,
+		Duration: TrivialMilliseconds,
+		Version:  Version,
+		Current: p.Id,
+		Hostname: Hostname(),
+	}
+
+	return &v
+}
+
 
 type Handler struct {
 	f func(Timer, http.ResponseWriter, *http.Request)
