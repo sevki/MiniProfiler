@@ -18,8 +18,9 @@ package miniprofiler_revel
 
 import (
 	"strings"
-	"github.com/sevki/MiniProfiler/miniprofiler"
+
 	"github.com/revel/revel"
+	"github.com/sevki/MiniProfiler/miniprofiler"
 )
 
 func Filter(c *revel.Controller, fc []revel.Filter) {
@@ -31,7 +32,6 @@ func Filter(c *revel.Controller, fc []revel.Filter) {
 	p := miniprofiler.NewProfile(c.Response.Out, c.Request.Request, c.Action)
 	c.Args["miniprofiler"] = p
 	if ok {
-		c.RenderArgs["miniprofiler"] = p.Includes()
 		c.RenderArgs["miniprofilerdata"] = p
 	}
 	fc[0](c, fc[1:])

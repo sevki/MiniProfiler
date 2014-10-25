@@ -222,6 +222,25 @@ func (t *Timing) AddCustomTiming(callType, executeType string, start, end time.T
 	t.CustomTimings[callType] = append(t.CustomTimings[callType], s)
 	t.Unlock()
 }
+func (t *Timing) AddCustomCall(callType, stack string, start, duration float64, command string) {
+	if t == nil {
+		return
+	}
+	t.Lock()
+	if t.CustomTimings == nil {
+		t.CustomTimings = make(map[string][]*CustomTiming)
+	}
+	s := &CustomTiming{
+		Id:                   newGuid(),
+		StartMilliseconds:    start,
+		DurationMilliseconds: duration,
+		CommandString:        command,
+		StackTraceSnippet:    stack,
+		ExecuteType:          "non threaded",
+	}
+	t.CustomTimings[callType] = append(t.CustomTimings[callType], s)
+	t.Unlock()
+}
 
 func (t *Timing) StepCustomTiming(callType, executeType, command string, f func()) {
 	start := time.Now()
